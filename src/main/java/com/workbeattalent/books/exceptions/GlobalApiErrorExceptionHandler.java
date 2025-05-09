@@ -41,4 +41,14 @@ public class GlobalApiErrorExceptionHandler {
         return new ResponseEntity<>(apiError, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(exception = {BookManagementInvalidException.class})
+    public ResponseEntity<ApiError> bookManagementExceptionHandler(final BookManagementInvalidException e, final WebRequest request) {
+        return new ResponseEntity<>(
+                new ApiError(
+                        request.getDescription(false),
+                        HttpStatus.BAD_REQUEST.name(),
+                        e.getMessage(),
+                        Map.of()),
+                HttpStatus.BAD_REQUEST);
+    }
 }
