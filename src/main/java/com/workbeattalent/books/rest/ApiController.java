@@ -2,6 +2,7 @@ package com.workbeattalent.books.rest;
 
 import com.workbeattalent.books.author.AuthorService;
 import com.workbeattalent.books.book.BookService;
+import com.workbeattalent.books.dto.AuthorRequest;
 import com.workbeattalent.books.dto.BookRequest;
 import com.workbeattalent.books.dto.BookResponse;
 import jakarta.validation.Valid;
@@ -23,6 +24,16 @@ public class ApiController {
     @PostMapping
     public ResponseEntity<BookResponse> create(final @Valid @RequestBody BookRequest request) {
         return new ResponseEntity<>(this.bookService.store(request), HttpStatus.CREATED);
+    }
+
+    @GetMapping(path = {"/search"})
+    public ResponseEntity<List<BookResponse>> searchByTitleLikely(final @RequestParam String title) {
+        return new ResponseEntity<>(this.bookService.findByTitleContaining(title), HttpStatus.OK);
+    }
+
+    @PostMapping(path = {"/authors"})
+    public ResponseEntity<List<BookResponse>> searchAuthorBooks(final @Valid @RequestBody AuthorRequest request) {
+        return new ResponseEntity<>(this.bookService.findByAuthorName(request), HttpStatus.OK);
     }
 
     @GetMapping
