@@ -1,8 +1,10 @@
 package com.workbeattalent.books.book;
 
 import com.workbeattalent.books.author.AuthorService;
+import com.workbeattalent.books.dto.AuthorRequest;
 import com.workbeattalent.books.dto.BookRequest;
 import com.workbeattalent.books.dto.BookResponse;
+import com.workbeattalent.books.exceptions.BookManagementInvalidException;
 import com.workbeattalent.books.exceptions.EntityElementNotFoundException;
 import com.workbeattalent.books.util.EntityDtoMapper;
 import lombok.RequiredArgsConstructor;
@@ -35,6 +37,21 @@ public class BookService {
                 .toList();
     }
 
+    public List<BookResponse> findByTitleContaining(final String keyword) {
+        return repository.findByTitleLikeIgnoreCaseOrderByAuthors_FirstnameAsc(keyword).stream()
+                .map(this.mapper::fromBook)
+                .toList();
+    }
+
+    public List<BookResponse> findByAuthorName(final AuthorRequest request) {
+        if (!this.authorService.exists(request.id()))
+            throw new BookManagementInvalidException("Author not found. So, unable to retrieve related books");
+
+        return repository.findByAuthors_FirstnameIgnoreCaseOrAuthors_LastnameIgnoreCase(request.firstname(), request.lastname()).stream()
+                .map(this.mapper::fromBook)
+                .toList();
+    }
+
     public BookResponse findById(final Long bookId) {
         return this.repository.findById(bookId)
                 .map(this.mapper::fromBook)
@@ -51,6 +68,17 @@ public class BookService {
     }
 
     public BookResponse update(final Long bookId, final BookRequest newUpdates) {
-        return null;
+        final var optionalBook = this.repository.findById(bookId);
+        if (optionalBook.isPresent()) {
+            final var newAuthors = this.authorService.findAll(newUpdates.authorIds());
+            if (newAuthors.size() == newUpdates.authorIds().size()) {
+                final var book = optionalBook.get();
+                book.setAuthors(newAuthors);
+                Book saved = this.repository.save(book);
+                return this.mapper.fromBook(saved);
+            }
+            throw new BookManagementInvalidException("One or more author(s) not found for update");
+        }
+        throw new EntityElementNotFoundException("Unable to find book with ID: " + bookId);
     }
 }

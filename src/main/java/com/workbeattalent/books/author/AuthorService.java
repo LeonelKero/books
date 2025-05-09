@@ -32,4 +32,8 @@ public class AuthorService {
                 .map(this.mapper::fromAuthor)
                 .orElseThrow(() -> new EntityElementNotFoundException("Unable to fetch author with ID: " + authorId));
     }
+
+    public Boolean exists(final UUID authorId) {
+        return this.repository.existsById(authorId);
+    }
 }
