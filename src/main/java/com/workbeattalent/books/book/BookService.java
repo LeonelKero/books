@@ -38,7 +38,7 @@ public class BookService {
     }
 
     public List<BookResponse> findByTitleContaining(final String keyword) {
-        return repository.findByTitleLikeIgnoreCaseOrderByAuthors_FirstnameAsc(keyword).stream()
+        return repository.findByTitleContainingIgnoreCaseOrderByAuthors_FirstnameAsc(keyword).stream()
                 .map(this.mapper::fromBook)
                 .toList();
     }
