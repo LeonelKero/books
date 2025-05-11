@@ -8,7 +8,7 @@ import java.util.List;
 
 @Repository
 public interface BookRepository extends JpaRepository<Book, Long> {
-    List<Book> findByTitleLikeIgnoreCaseOrderByAuthors_FirstnameAsc(@NonNull String title);
+    List<Book> findByTitleContainingIgnoreCaseOrderByAuthors_FirstnameAsc(@NonNull String title);
 
     List<Book> findByAuthors_FirstnameIgnoreCaseOrAuthors_LastnameIgnoreCase(@NonNull String firstname, String lastname);
 }
