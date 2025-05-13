@@ -73,6 +73,9 @@ public class BookService {
             final var newAuthors = this.authorService.findAll(newUpdates.authorIds());
             if (newAuthors.size() == newUpdates.authorIds().size()) {
                 final var book = optionalBook.get();
+                book.setTitle(newUpdates.title());
+                book.setPages(newUpdates.pages());
+                book.setSummary(newUpdates.summary());
                 book.setAuthors(newAuthors);
                 Book saved = this.repository.save(book);
                 return this.mapper.fromBook(saved);
