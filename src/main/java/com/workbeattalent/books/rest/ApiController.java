@@ -19,7 +19,6 @@ import java.util.List;
 public class ApiController {
 
     private final BookService bookService;
-    private final AuthorService authorService;
 
     @PostMapping
     public ResponseEntity<BookResponse> create(final @Valid @RequestBody BookRequest request) {
