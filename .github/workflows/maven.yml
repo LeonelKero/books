@@ -6,22 +6,18 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: Java CI with Maven
+name: Java CI with Docker
 
 on:
   push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+    branches: [ "release" ]
 
 jobs:
   build:
 
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v4
-    
     - name: Set up JDK 21
       uses: actions/setup-java@v4
       with:
@@ -30,17 +26,23 @@ jobs:
         cache: maven
         
     - name: Build with Maven
-      run: mvn -B package --file pom.xml
+      run: mvn clean install
 
-    - name: Test with maven
-      run: mvn test
+    - name: Build with docker
+      run: docker build -t book-api .
 
-    - name: Cache Maven packages
-      uses: actions/cache@v3
-      with:
-        path: ~/.m2
-        key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
-        restore-keys: ${{ runner.os }}-m2”
+    - name: Push docker image to registry
+      run: echo ${{secrets.DOCKER_HUB_PASSWORD}} | 
+          docker login -u ${{secrets.DOCKER_HUB_USERNAME}} --password-stdin 
+          docker tag book-api ${{secrets.DOCKER_HUB_USERNAME}}/book-api:latest
+          docker push ${{secrets.DOCKER_HUB_USERNAME}}/book-api:latest
+
+#    - name: Cache Maven packages
+#      uses: actions/cache@v3
+#      with:
+#        path: ~/.m2
+#        key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+#        restore-keys: ${{ runner.os }}-m2”
 
 
     # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
