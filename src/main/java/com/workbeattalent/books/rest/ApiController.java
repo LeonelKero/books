@@ -1,10 +1,11 @@
 package com.workbeattalent.books.rest;
 
-import com.workbeattalent.books.author.AuthorService;
 import com.workbeattalent.books.book.BookService;
 import com.workbeattalent.books.dto.AuthorRequest;
 import com.workbeattalent.books.dto.BookRequest;
 import com.workbeattalent.books.dto.BookResponse;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,11 +17,13 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(path = {"/api/v1/books"})
+@Tag(name = "API Controller", description = "Main Book Api Controller")
 public class ApiController {
 
     private final BookService bookService;
 
     @PostMapping
+    @Operation(summary = "Store new Books", description = "Record new books onces author(s) is/are already saved")
     public ResponseEntity<BookResponse> create(final @Valid @RequestBody BookRequest request) {
         return new ResponseEntity<>(this.bookService.store(request), HttpStatus.CREATED);
     }
