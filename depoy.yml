@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: book-deploy
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      project: book-pod # name of the pods that the controller should manage
+  template: # Pod definition
+    metadata:
+      labels:
+        project: book-pod # all pods will have this label
+    spec:
+      containers:
+        - name: book-api-ctnr
+          imagePullPolicy: Always
+          image: greengorilla7/book-api
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+#          resources:
+#            requests:
+#              memory: '64Mi'
+#              cpu: '250ms'
+#            limits:
+#              memory: '128Mi'
+#              cpu: '500m'
