@@ -12,6 +12,7 @@ and RestController) and handle two main resources `book` and `author`.
 - H2
 - Lombok
 - Test
+- Kubernetes
 
 ## Achievements
 
@@ -23,6 +24,8 @@ and RestController) and handle two main resources `book` and `author`.
 - Web UI
 - REST API
 - API Documentation
+- CI/CD Pipeline
+- K8s (Pod, Service, Deployment)
 
 
 ## Credit
