@@ -1,12 +1,12 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: book-pod
+  name: book-pod # pod name
   labels:
-    project: book-api
+    project: book-api # this label will be used later by the service to load balance
 spec:
   containers:
-    - name: book-api-ctnr
+    - name: book-api-ctnr # container name
       image: greengorilla7/book-api
       ports:
-        - containerPort: 8080
+        - containerPort: 8080 # exposed port
