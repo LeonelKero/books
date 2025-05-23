@@ -6,6 +6,6 @@ spec:
   type: LoadBalancer # type of the service
   ports:
   - port: 8008
-  targetPort: 8080
+    targetPort: 8080
   selector:
     project: book-api # label from pod
