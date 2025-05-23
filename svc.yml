@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: book-lb-svc # service name
+spec:
+  type: LoadBalancer # type of the service
+  ports: 8008
+  targetPort:
+    - 8080
+  selector:
+    project: book-api # label from pod
