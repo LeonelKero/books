@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: book-pod
+  labels:
+    project: book-api
+spec:
+  containers:
+    - name: book-api-ctnr
+      image: greengorilla7/book-api
+      ports:
+        - containerPort: 8080
