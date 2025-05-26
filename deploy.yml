@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: book-deploy
 spec:
-  replicas: 5
+  replicas: 10
   selector:
     matchLabels:
       project: book-pod # name of the pods that the controller should manage
