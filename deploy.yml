@@ -6,11 +6,11 @@ spec:
   replicas: 5
   selector:
     matchLabels:
-      project: book-pod # name of the pods that the controller should manage
+      project: book-api-pod # name of the pods that the controller should manage
   template: # Pod definition
     metadata:
       labels:
-        project: book-pod # all pods will have this label
+        project: book-api-pod # all pods will have this label
     spec:
       containers:
         - name: book-api-ctnr

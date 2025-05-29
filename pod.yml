@@ -3,7 +3,7 @@ kind: Pod
 metadata:
   name: book-pod # pod name
   labels:
-    project: book-api # this label will be used later by the service to load balance
+    project: book-api-pod # this label will be used later by the service to load balance
 spec:
   containers:
     - name: book-api-ctnr # container name
